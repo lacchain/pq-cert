@@ -1,0 +1,10 @@
+FROM debian:testing-slim
+RUN mkdir /debs
+VOLUME /out
+COPY debs/liboqs_0.3.0_amd64.deb /debs
+COPY debs/libssl1.1_1.1.1g-1+oqs_amd64.deb /debs
+COPY debs/openssl_1.1.1g-1+oqs_amd64.deb /debs
+RUN apt update
+RUN apt install -y /debs/liboqs_0.3.0_amd64.deb /debs/libssl1.1_1.1.1g-1+oqs_amd64.deb /debs/openssl_1.1.1g-1+oqs_amd64.deb
+CMD openssl genpkey -algorithm dilithium2 > /out/quantum_private.pem && \
+    openssl req -new -key ./out/quantum_private.pem -out /out/quantum_request.csr -subj "${SUBJECT}"

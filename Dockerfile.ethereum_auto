@@ -1,0 +1,9 @@
+FROM debian
+RUN apt-get update && \
+    apt-get install -y openssl
+VOLUME /out
+CMD openssl ecparam -name secp256k1 -genkey -noout > /out/ethereum_private.pem && \
+    openssl ec -text -noout < /out/ethereum_private.pem > key && \
+    cat key | grep pub -A 5 | tail -n +2 | tr -d '\n[:space:]:' | sed 's/^04//' > /out/ethereum.pub && \
+    cat key | grep priv -A 3 | tail -n +2 | tr -d '\n[:space:]:' | sed 's/^00//' > /out/ethereum.priv && \
+    openssl req -new -key /out/ethereum_private.pem -out /out/ethereum_request.csr -subj "${SUBJECT}"

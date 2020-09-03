@@ -1,0 +1,10 @@
+FROM debian:testing-slim
+RUN mkdir /debs
+VOLUME /out
+COPY cat/generate_certs_validation.sh generate_full.sh
+COPY debs/liboqs_0.3.0_amd64.deb /debs
+COPY debs/libssl1.1_1.1.1g-1+oqs_amd64.deb /debs
+COPY debs/openssl_1.1.1g-1+oqs_amd64.deb /debs
+RUN apt update
+RUN apt install -y /debs/liboqs_0.3.0_amd64.deb /debs/libssl1.1_1.1.1g-1+oqs_amd64.deb /debs/openssl_1.1.1g-1+oqs_amd64.deb
+ENTRYPOINT ["sh", "generate_full.sh"]

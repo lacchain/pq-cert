@@ -1,0 +1,16 @@
+FROM debian
+RUN apt-get update && \
+    apt-get install -y openssl
+VOLUME /out
+ARG PRIVATE_KEY
+ARG PUBLIC_KEY
+RUN echo "asn1 = SEQUENCE:seq_section\n\
+          [seq_section]\n\
+          version = INTEGER:01\n\
+          privateKey = FORMAT:HEX,OCT:${PRIVATE_KEY}\n\
+          parameters = EXPLICIT:0,OID:secp256k1\n\
+          publicKey  = EXPLICIT:1,FORMAT:HEX,BITSTR:04${PUBLIC_KEY}" > ethereum.asn1
+
+CMD openssl asn1parse -noout -genconf ethereum.asn1 -out ethereum.der && \
+    openssl ec -inform DER -in ethereum.der -out /out/ethereum_private.pem && \
+    openssl req -new -key /out/ethereum_private.pem -out /out/ethereum_request.csr -subj "${SUBJECT}"

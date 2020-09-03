@@ -1,0 +1,54 @@
+version: '3'
+
+services:
+  ethereum:
+    build:
+      dockerfile: Dockerfile.ethereum
+      context: .
+      args:
+        PRIVATE_KEY: 8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63
+        PUBLIC_KEY: 09b02f8a5fddd222ade4ea4528faefc399623af3f736be3c44f03e2df22fb792f3931a4d9573d333ca74343305762a753388c3422a86d98b713fc91c1ea04842
+    environment:
+      SUBJECT: /C=MX/ST=DF/L=TL/O=IADB/OU=Lab/CN=localhost
+    volumes:
+      - ./out:/out
+
+  ethereum_auto:
+    build:
+      dockerfile: Dockerfile.ethereum_auto
+      context: .
+    environment:
+      SUBJECT: /C=MX/ST=DF/L=TL/O=Prueba1/OU=IT/CN=localhost
+    volumes:
+      - ./out:/out
+
+  quantum:
+    build:
+      dockerfile: Dockerfile.quantum
+      context: .
+    environment:
+      SUBJECT: /C=MX/ST=DF/L=TL/O=Prueba1/OU=IT/CN=localhost
+    volumes:
+      - ./out:/out
+
+  generator:
+    build:
+      dockerfile: Dockerfile.generator
+      context: .
+    volumes:
+      - ./out:/out
+      - ./main.crt:/main.crt
+      - ./root_ca.key:/root_ca.key
+      - ./root_ca.crt:/root_ca.crt
+
+  did:
+    build:
+      dockerfile: Dockerfile.did
+      context: .
+    volumes:
+      - ./out/certificate.crt:/app/certificate.crt
+    environment:
+      ETHR_REGISTRY: "0xd6A7c915066E17ba18024c799258C8A286fFBc00"
+      WEB3_RPC: http://35.184.61.29:4545
+      CERTIFICATE: certificate.crt
+      NETWORK_ID: 648539

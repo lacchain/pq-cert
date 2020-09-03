@@ -1,0 +1,6 @@
+FROM node:12.4
+WORKDIR /app
+COPY ca/package*.json ./
+RUN npm install
+COPY ca/create_did.js ./create_did.js
+CMD [ "node", "--experimental-modules", "create_did.js" ]
