@@ -14,6 +14,12 @@ The applicant must previously have a valid certificate (usually SSL), and a set 
 Optionally, you can add a Post-Quantum key pair in the certificate request. 
 As a final step, the certificate issued will have embedded both: the certificate data (SSL), as well as the Ethereum and Post-Quantum keys (if applicable)
 
+In the following diagram the certification process and DID issuance using Ethereum Key Pair is show.
+![DID Issuance](pq-cert-ethereum.png?raw=true "Certification using Ethereum KeyPair")
+
+The next diagram shows the same process as above, but extending the certification process with a Post-Quantum Keys Generated.
+![DID Issuance](pq-cert-quantum.png?raw=true "Certification using Ethereum KeyPair and Post-Quantum Keys") 
+
 ## Generate Certificates
 
 In order to validate the data of the entity to be registered in the DNS, it is necessary to have a valid X.509 certificate issued by a certifying entity (CA). Likewise, it is necessary to generate a request signing certificate (CSR) with the ethereum keys to send to the Post-Quantum Certification Authority and a certificate is generated under the hierarchy of said root CA.
