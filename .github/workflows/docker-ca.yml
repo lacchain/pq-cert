@@ -35,7 +35,7 @@ jobs:
 
       - name: Log into GitHub Container Registry
         if: github.event_name == 'push'
-        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.repository_owner }} --password-stdin
+        run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u actions-docker --password-stdin
 
       - name: Push image to GitHub Container Registry
         if: github.event_name == 'push'
