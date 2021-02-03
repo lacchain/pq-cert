@@ -1,6 +1,8 @@
 name: Build
 
 on:
+  push:
+    branches: [ master ]
   pull_request:
     branches: [ master ]
 
@@ -9,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build the Applicant docker image
+      - name: Build the CA docker image
         run: docker build --target builder . --file ca.Dockerfile --tag pq-cert-ca:$(date +%s)
   applicant:
     runs-on: ubuntu-latest
