@@ -14,8 +14,9 @@ env:
   IMAGE_NAME: pq-cert-ca
 
 jobs:
-  ca:
+  push:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v2
 
@@ -29,7 +30,7 @@ jobs:
           [ "$VERSION" == "master" ] && VERSION=latest
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: Build the CA docker image
+      - name: Build docker image
         run: docker build . --file ca.Dockerfile --tag $IMAGE_NAME:$VERSION
 
       - name: Log into GitHub Container Registry
