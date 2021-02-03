@@ -1,0 +1,30 @@
+{
+  "name": "bndes-vc-back",
+  "version": "0.9.0",
+  "description": "",
+  "type": "module",
+  "keywords": [],
+  "author": "Sergio Ceron Figueroa",
+  "license": "ISC",
+  "scripts": {
+    "start": "node --experimental-modules --experimental-json-modules ./app.js"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "moment": "^2.27.0",
+    "ethereum-public-key-to-address": "^0.0.5",
+    "@fidm/x509": "^1.2.1",
+    "did-jwt": "^4.5.0",
+    "elliptic": "^6.5.3",
+    "ethereumjs-tx": "1.3.7",
+    "ethereumjs-util": "^7.0.4",
+    "ethereumjs-wallet": "^1.0.0",
+    "ethjs-contract": "^0.2.3",
+    "ethjs-provider-http": "^0.1.6",
+    "ethjs-query": "^0.3.8",
+    "ethr-did-resolver": "^2.3.4",
+    "web3": "^1.2.11"
+  }
+}

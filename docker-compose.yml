@@ -1,54 +1,70 @@
-version: '3'
-
+version: "3.8"
 services:
-  ethereum:
+  mail-server:
     build:
-      dockerfile: Dockerfile.ethereum
       context: .
-      args:
-        PRIVATE_KEY: 8f2a55949038a9610f50fb23b5883af3b4ecb3c3bb792cbcefbd1542c692be63
-        PUBLIC_KEY: 09b02f8a5fddd222ade4ea4528faefc399623af3f736be3c44f03e2df22fb792f3931a4d9573d333ca74343305762a753388c3422a86d98b713fc91c1ea04842
-    environment:
-      SUBJECT: /C=MX/ST=DF/L=TL/O=IADB/OU=Lab/CN=localhost
-    volumes:
-      - ./out:/out
+      dockerfile: mailserver.Dockerfile
+    expose:
+      - 1080
+      - 1025
+    ports:
+      - 1025:1025/tcp
+      - 1080:1080/tcp
 
-  ethereum_auto:
-    build:
-      dockerfile: Dockerfile.ethereum_auto
-      context: .
-    environment:
-      SUBJECT: /C=MX/ST=DF/L=TL/O=Prueba1/OU=IT/CN=localhost
-    volumes:
-      - ./out:/out
 
-  quantum:
-    build:
-      dockerfile: Dockerfile.quantum
-      context: .
+  pqe-rpc-server:
+    image: pqe-rpc-server:latest
+    ports:
+      - 443:443/tcp
     environment:
-      SUBJECT: /C=MX/ST=DF/L=TL/O=Prueba1/OU=IT/CN=localhost
+      - SERVICE_NAME=pqe-rpc-server
+      - SMTP_HOST=mail-server
+      - SMTP_PORT=1025
+      - SMTP_SSL=false
+      - SMTP_USER=
+      - SMTP_PASS=
     volumes:
-      - ./out:/out
+      - ./shared-volume/ca:/ca-certs/
+    depends_on:
+      - mail-server
 
-  generator:
+  openssl-pqe-applicant:
     build:
-      dockerfile: Dockerfile.generator
       context: .
-    volumes:
-      - ./out:/out
-      - ./main.crt:/main.crt
-      - ./root_ca.key:/root_ca.key
-      - ./root_ca.crt:/root_ca.crt
-
-  did:
-    build:
-      dockerfile: Dockerfile.did
-      context: .
-    volumes:
-      - ./out/certificate.crt:/app/certificate.crt
+      dockerfile: applicant.Dockerfile
     environment:
-      ETHR_REGISTRY: "0xd6A7c915066E17ba18024c799258C8A286fFBc00"
-      WEB3_RPC: http://35.184.61.29:4545
-      CERTIFICATE: certificate.crt
-      NETWORK_ID: 648539
+      - SERVER_HOST=pqe-rpc-server
+    volumes:
+      - ./shared-volume/ca:/ca-certs/
+      - ./shared-volume/:/out
+    ports:
+      - 8081:8080/tcp
+    command: ["./run.sh"]
+    depends_on:
+      - pqe-rpc-server
+
+
+  openssl-pqe-ca:
+    build:
+      context: .
+      dockerfile: ca.Dockerfile
+    environment:
+      - SERVER_HOST=pqe-rpc-server
+      - ETHR_REGISTRY=0x488C83c4D1dDCF8f3696273eCcf0Ff4Cf54Bf277
+      - DNS_REGISTRY=0x87570d1Be0174a214465E27D70647a564CaB595c
+      - DNS_ADMIN_ADDRESS=0xa05ED7ab29f246aDa5f0eb76Bdf9A2F2558da63f
+      - DNS_ADMIN_PRIVATE_KEY=946e789ceb2c1afba38b91e176fc4bb1a11b74f748bd9b7f0850d8977ac74a06
+      - WEB3_RPC=https://writer.lacchain.net
+      - NETWORK_ID=648529
+    volumes:
+      - ./shared-volume/ca:/ca-certs/
+      - ./shared-volume/:/out
+    ports:
+      - 8082:8080/tcp
+    command: ["./run.sh"]
+    depends_on:
+      - pqe-rpc-server
+
+
+volumes:
+  shared-volume:

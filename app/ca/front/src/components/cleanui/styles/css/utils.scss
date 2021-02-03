@@ -1,0 +1,91 @@
+@import 'components/mixins.scss';
+
+.cui {
+  &__utils {
+    &__content {
+      padding: rem(30);
+      margin: 0 auto;
+
+      @media (max-width: $sm-max-width) {
+        padding: rem(30) rem(16);
+      }
+    }
+
+    &__heading {
+      color: $black;
+      font-size: rem(17);
+      text-transform: uppercase;
+      margin-bottom: rem(12);
+      text-align: center;
+    }
+
+    &__shadow {
+      box-shadow: $shadow-ant;
+    }
+  }
+}
+
+// dark theme
+[data-kit-theme='dark'] {
+  .cui {
+    &__utils {
+      &__heading {
+        color: $dark-gray-1;
+      }
+    }
+  }
+}
+
+[data-kit-theme="default"] .ant-modal-mask {
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+[data-kit-theme="default"] .ant-modal-header {
+  border-radius: 10px;
+}
+
+[data-kit-theme="default"] .ant-modal-content {
+  border-radius: 10px;
+}
+
+.ant-modal-content {
+  .rst__rowContents {
+    padding: 0;
+  }
+
+  .rst__rowLabel {
+    height: 100%;
+  }
+
+  .rst__rowLabel .label {
+    display: inline-block;
+    height: 100%;
+    padding: 8px;
+    background-color: #e4e9f0;
+    color: #555;
+    min-width: 100px;
+    font-weight: bold;
+    white-space: nowrap;
+    position: relative;
+    margin-left: -1px;
+    border-left: 1px solid #d9dee9;
+    border-right: 1px solid #d9dee9;
+    margin-right: 10px;
+  }
+
+  .rst__rowLabel .icon-success {
+    color: $primary;
+    position: absolute;
+    right: 5px;
+    top: 13px;
+  }
+
+  .rst__rowLabel .icon-failed {
+    color: $danger;
+    position: absolute;
+    right: 5px;
+    top: 13px;
+  }
+}

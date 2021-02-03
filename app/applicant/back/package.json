@@ -1,0 +1,19 @@
+{
+  "name": "bndes-vc-back",
+  "version": "0.9.0",
+  "description": "",
+  "type": "module",
+  "keywords": [],
+  "author": "Sergio Ceron Figueroa",
+  "license": "ISC",
+  "scripts": {
+    "start": "node --experimental-modules ./app.js"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "moment": "^2.27.0",
+    "ethereum-public-key-to-address": "^0.0.5"
+  }
+}

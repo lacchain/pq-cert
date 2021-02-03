@@ -6,7 +6,7 @@ Certificates will be used to register and validate the entity in an Ethereum Sma
 # DID Issuance
 In order to register a DID in the DNS service, it must be generated from a valid X.509 certificate. The steps for the generation of the certificates are described in the section below.
 
-![DID Issuance](did_issuance.png?raw=true "DID Issuance Diagram") 
+![DID Issuance](doc/did_issuance.png?raw=true "DID Issuance Diagram") 
 
 In the previous diagram it is possible to see the process for the issuance of a DID through a certifying authority, 
 making use of different X.509 certificates validated by a root CA. 
@@ -15,10 +15,10 @@ Optionally, you can add a Post-Quantum key pair in the certificate request.
 As a final step, the certificate issued will have embedded both: the certificate data (SSL), as well as the Ethereum and Post-Quantum keys (if applicable)
 
 In the following diagram the certification process and DID issuance using Ethereum Key Pair is show.
-![DID Issuance](pq-cert-ethereum.png?raw=true "Certification using Ethereum KeyPair")
+![DID Issuance](doc/pq-cert-ethereum.png?raw=true "Certification using Ethereum KeyPair")
 
 The next diagram shows the same process as above, but extending the certification process with a Post-Quantum Keys Generated.
-![DID Issuance](pq-cert-quantum.png?raw=true "Certification using Ethereum KeyPair and Post-Quantum Keys") 
+![DID Issuance](doc/pq-cert-quantum.png?raw=true "Certification using Ethereum KeyPair and Post-Quantum Keys") 
 
 ## Generate Certificates
 

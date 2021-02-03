@@ -1,0 +1,19 @@
+# This openssl configuration file enables the IronBridge ibrand and ibinit RNG engines.
+
+openssl_conf = openssl_def
+
+[openssl_def]
+engines = engine_section
+
+[engine_section]
+ibrand = ibrand_section
+ibinit = ibinit_section
+
+[ibrand_section]
+engine_id = ibrand_engine
+default_algorithms = RAND
+init = 0
+
+[ibinit_section]
+engine_id = ibinit_engine
+init = 0
