@@ -29,9 +29,7 @@ services:
       - mail-server
 
   openssl-pqe-applicant:
-    build:
-      context: .
-      dockerfile: applicant.Dockerfile
+    image: ghcr.io/lacchain/pq-cert-applicant
     environment:
       - SERVER_HOST=pqe-rpc-server
     volumes:
@@ -45,9 +43,7 @@ services:
 
 
   openssl-pqe-ca:
-    build:
-      context: .
-      dockerfile: ca.Dockerfile
+    image: ghcr.io/lacchain/pq-cert-ca
     environment:
       - SERVER_HOST=pqe-rpc-server
       - ETHR_REGISTRY=0x488C83c4D1dDCF8f3696273eCcf0Ff4Cf54Bf277
