@@ -3,10 +3,10 @@
 LACChain DNS is a Decentralized Name Service that helps to maintain a registry of verified entities through a set of certificates issued by Certification Authorities (CA) associated with a DID (ethr). 
 Certificates will be used to register and validate the entity in an Ethereum Smart contract, which we called: **DNSRegistry**.
 
-# DID Issuance
+# Certification Process
 In order to register a DID in the DNS service, it must be generated from a valid X.509 certificate. The steps for the generation of the certificates are described in the section below.
 
-![DID Issuance](doc/did_issuance.png?raw=true "DID Issuance Diagram") 
+![DID Certification Process](doc/certification_process.png?raw=true "DID Certification Process") 
 
 In the previous diagram it is possible to see the process for the issuance of a DID through a certifying authority, 
 making use of different X.509 certificates validated by a root CA. 
@@ -20,7 +20,7 @@ In the following diagram the certification process and DID issuance using Ethere
 The next diagram shows the same process as above, but extending the certification process with a Post-Quantum Keys Generated.
 ![DID Issuance](doc/pq-cert-quantum.png?raw=true "Certification using Ethereum KeyPair and Post-Quantum Keys") 
 
-## Generate Certificates
+## Certificates Generation
 
 In order to validate the data of the entity to be registered in the DNS, it is necessary to have a valid X.509 certificate issued by a certifying entity (CA). Likewise, it is necessary to generate a request signing certificate (CSR) with the ethereum keys to send to the Post-Quantum Certification Authority and a certificate is generated under the hierarchy of said root CA.
 
