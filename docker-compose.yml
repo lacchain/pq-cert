@@ -59,6 +59,15 @@ services:
     depends_on:
       - pqe-rpc-server
 
+  openssl-pqe-gencertca:
+    build:
+      context: .
+      dockerfile: genca.Dockerfile
+    environment:
+      - SUBJECT=/C=US/ST=CA/O=IADB/CN=iadb.org
+    volumes:
+      - ./shared-volume/:/out
+    command: ["./run.sh"]
 
 volumes:
   shared-volume:
