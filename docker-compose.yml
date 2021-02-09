@@ -60,9 +60,7 @@ services:
       - pqe-rpc-server
 
   openssl-pqe-gencertca:
-    build:
-      context: .
-      dockerfile: genca.Dockerfile
+    image: ghcr.io/lacchain/pq-cert-genca
     environment:
       - SUBJECT=/C=US/ST=CA/O=IADB/CN=iadb.org
     volumes:
