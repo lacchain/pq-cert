@@ -14,11 +14,11 @@ export default class APIRouter extends Router {
 	}
 
 	init() {
-		const httpsAgent = new https.Agent( {
+		/*const httpsAgent = new https.Agent( {
 			rejectUnauthorized: false,
 			cert: fs.readFileSync( "/certs/client.crt" ),
 			key: fs.readFileSync( "/certs/client.key" )
-		} );
+		} );*/
 
 		this.get( '/test', async () => {
 			return await this.execute( "openssl rand -engine ibrand 24" );
@@ -36,7 +36,7 @@ export default class APIRouter extends Router {
 					value: email
 				}) ),
 				kemAlgorithm: "222"
-			}, { httpsAgent } );
+			} );
 			const data = JSON.stringify( result.data, null, 2 );
 			fs.writeFileSync( '/oob/ironbridge_clientsetup_OOB_1.json', JSON.stringify( result.data ) );
 			return data;

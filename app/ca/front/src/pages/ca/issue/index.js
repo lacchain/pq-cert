@@ -2,13 +2,10 @@ import React from 'react'
 import axios from 'axios';
 import { withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { Alert, Button, DatePicker, Form, Input, Upload, Switch, Steps } from "antd";
+import { Alert, Button, DatePicker, Form, Upload, Switch, Steps } from "antd";
 import { Helmet } from "react-helmet";
-import PerfectScrollbar from "react-perfect-scrollbar";
-import SortableTree from "react-sortable-tree";
-import { CloudDownloadOutlined, ExpandOutlined, UploadOutlined } from "@ant-design/icons";
+import { CloudDownloadOutlined, UploadOutlined } from "@ant-design/icons";
 
-const { TextArea } = Input;
 const { Step } = Steps;
 
 const mapStateToProps = ( { user } ) => ( {
@@ -21,22 +18,10 @@ class IssueCertificate extends React.Component {
   state = {
     error: null,
     current: 0,
-    setup: false,
-    emails: [],
-    keySegments: [],
     fileList: {},
     loading: false,
     result: {}
   };
-
-  email = React.createRef()
-
-  addEmail = () => {
-    const { emails } = this.state;
-    const { value } = this.email.current;
-    this.setState({ emails: emails.concat( { value } ) });
-    this.email.current.value = ''
-  }
 
   readFile = file => new Promise( resolve => {
     const reader = new FileReader();
@@ -74,23 +59,8 @@ class IssueCertificate extends React.Component {
     link.click();
   }
 
-  requestSetup = async () => {
-    const { emails } = this.state;
-    const result = await axios.get( `/api/setup?emails=${emails.map(e => e.value).join(',')}` )
-    this.setState( { keySegments: [result.data], setup: true } )
-  }
-
-  setup = async values => {
-    const segments = [];
-    for( let i = 1; i < Object.keys(values).length; i += 1 ){
-      segments.push( values[`segment.${i}`] );
-    }
-    await axios.post( "/api/setup", { segments } )
-    this.setState( { current: 1 } )
-  }
-
   render() {
-    const { current, setup, emails, keySegments, fileList, result, loading, error } = this.state;
+    const { current, fileList, result, loading, error } = this.state;
 
     const upload = name => ({
       onRemove: () => {
@@ -127,122 +97,17 @@ class IssueCertificate extends React.Component {
           className="site-navigation-steps m-3"
         >
           <Step
-            title="Setup"
+            title="Applicant CSR"
             status={current === 0 ? "process" : "wait"}
           />
           <Step
-            title="Applicant CSR"
-            status={current === 1 ? "process" : "wait"}
-          />
-          <Step
             title="Certificates"
-            status={current === 2 ? "process" : "wait"}
+            status={current === 1 ? "process" : "wait"}
           />
         </Steps>
         <div className="card overflow-hidden">
           <div className="card-body">
-            {current === 0 && !setup &&
-            <div>
-              <h6 className="mb-4">
-                <strong>Ironbridge Setup</strong>
-              </h6>
-              <div className="row">
-                <div className="col-12">
-                  <div className="row mb-3">
-                    <div className="col-3">
-                      <input
-                        className="form-control"
-                        placeholder="Email to send key segment"
-                        type="text"
-                        ref={this.email}
-                      />
-                    </div>
-                    <div className="col-3">
-                      <button
-                        type="button"
-                        className="btn btn-success btn-with-addon"
-                        onClick={this.addEmail}
-                      >
-                        <span className="btn-addon">
-                          <i className="btn-addon-icon fe fe-plus-circle" />
-                        </span>
-                        Add Email
-                      </button>
-                    </div>
-                  </div>
-                  <div>
-                    <PerfectScrollbar>
-                      <div className="height-200">
-                        <SortableTree
-                          treeData={emails}
-                          onChange={keys => this.setState( { emails: keys })}
-                          generateNodeProps={({ node: { value } }) => ({
-                            title: (
-                              <span><b>{value}</b></span>
-                            )
-                          })}
-                        />
-                      </div>
-                    </PerfectScrollbar>
-                  </div>
-                  <div className="text-center">
-                    <Button
-                      type="button"
-                      className="btn btn-warning ant-btn-lg"
-                      onClick={() => this.requestSetup()}
-                      icon={<ExpandOutlined />}
-                      loading={loading}
-                    >
-                      Request Key Segments
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            }
-            {current === 0 && setup &&
-            <div>
-              <h6 className="mb-4">
-                <strong>Ironbridge Key Segments</strong>
-              </h6>
-              <Form
-                layout="vertical"
-                initialValues={{ 'segment.0': keySegments.length > 0 ? keySegments[0] : '' }}
-                onFinish={values => this.setup( values )}
-              >
-                <div className="row">
-                  <div className="col-12">
-                    <Form.Item
-                      name="segment.0"
-                      label="First segment"
-                    >
-                      <TextArea rows="4" readOnly />
-                    </Form.Item>
-                    {emails.map( (email, index) =>
-                      <Form.Item
-                        key={email}
-                        name={`segment.${index + 1}`}
-                        label={`${email.value} segment`}
-                        rules={[{ required: true, message: 'Please input the key segment' }]}
-                      >
-                        <TextArea rows="4" />
-                      </Form.Item>
-                    )}
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-12 border-top pt-4 text-center">
-                    <Form.Item>
-                      <Button type="primary" htmlType="submit">
-                        Next Step
-                      </Button>
-                    </Form.Item>
-                  </div>
-                </div>
-              </Form>
-            </div>
-            }
-            {current === 1 &&
+            {current === 0 &&
               <Form
                 layout="vertical"
                 onFinish={values => this.send( values )}
@@ -328,7 +193,7 @@ class IssueCertificate extends React.Component {
                 </div>
               </Form>
             }
-            {current === 2 &&
+            {current === 1 &&
             <Form
               layout="vertical"
             >
