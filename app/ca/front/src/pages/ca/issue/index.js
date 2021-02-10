@@ -45,7 +45,7 @@ class IssueCertificate extends React.Component {
       if( result.error ) {
         this.setState( { error: result.error } );
       } else {
-        this.setState( { result, current: 2 } );
+        this.setState( { result, current: 1 } );
       }
     } );
   }
@@ -235,7 +235,7 @@ class IssueCertificate extends React.Component {
               <div className="row">
                 <div className="col-12 border-top pt-4 text-center">
                   <Form.Item>
-                    <Button type="default" htmlType="cancel" className="mr-3" onClick={() => this.setState( { current: 1 } )}>
+                    <Button type="default" htmlType="cancel" className="mr-3" onClick={() => this.setState( { current: 0 } )}>
                       Issue a new certificate {loading}
                     </Button>
                   </Form.Item>
