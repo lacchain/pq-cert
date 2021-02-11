@@ -38,6 +38,7 @@ RUN apt-get update && apt-get install --no-install-recommends -yV \
     jq \
     wait-for-it \
     file \
+    rsyslog \
  && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir /app
@@ -49,11 +50,14 @@ COPY ./config/demo_openssl.cnf /usr/lib/ssl/
 COPY ./config/ibrand.conf /ibrand.cnf
 COPY ./config/setup.sh /setup.sh
 
+RUN sed -i '/imklog/s/^/#/' /etc/rsyslog.conf
+
 RUN mkdir -p /var/lib/ibrand/
 RUN mkdir /certs/
 RUN mkdir /oob/
 RUN echo '#!/bin/sh\n\
 set -x\n\
+service rsyslog start\n\
 cp /ca-certs/root.crt /usr/local/share/ca-certificates/\n\
 update-ca-certificates -v\n\
 openssl genrsa -out /certs/client.key 2048\n\
